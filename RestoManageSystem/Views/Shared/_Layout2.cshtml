@@ -12,13 +12,14 @@
 <body>
     <nav style="color:greenyellow; min-height:50px" class="navbar navbar-default" >
         <div class="container-fluid">
-            <div class="navbar-header"> 
+            <div class="navbar-header">
                 <a class="navbar-brand" href="~/Admin/Home" style="font-size:x-large; color:black; font-family:'Brush Script MT'; font-weight:700; font-size:xx-large">RestoConnect</a>
             </div>
-            <ul class="nav navbar-nav" >
+            <ul class="nav navbar-nav">
                 <li><a href="~/Home/About" class=" active glyphicon glyphicon-info-sign" style="font-size:larger">About </a></li>
                 <li><a href="~/Home/Contact" class=" active glyphicon glyphicon-globe" style="font-size:larger">Contact</a></li>
             </ul>
+            <p style="display:inline; color:darkblue; font-size:x-large; font-weight:700;">Welcome @Session["Username"] </p>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="@Url.Action("Index", "Home")" style="font-size:x-large; color:black"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 @*@Html.ActionLink("Admin Display", "Login", "Account", new { Role = "Admin" }, null)*@

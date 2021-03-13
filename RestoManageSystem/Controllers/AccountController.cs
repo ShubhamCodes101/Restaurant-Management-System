@@ -107,7 +107,7 @@ namespace RestoManageSystem.Controllers
             {
                 if(obj.Userid=="admin" && obj.Password=="admin")
                 {
-                    Session["Username"] = "admin";
+                    Session["Username"] = "Admin";
                     return RedirectToAction("Home", "Admin");             // add admin functions link here
                 }
                 else
