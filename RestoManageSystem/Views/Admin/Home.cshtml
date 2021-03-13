@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<h1 style="text-align:center">Admin Home</h1>
+<br><br>
+<head>
+<style>
+        .button {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 28px;
+            padding: 20px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+            height:180px
+        }
+
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .button span:after {
+                content: '\00bb';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+        }
+
+        .button:hover span {
+            padding-right: 25px;
+        }
+
+        .button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+
+        .button2 {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            width:200px;
+            height:95px;
+        }
+
+        .button2:hover {
+            background-color: #3e8e41
+        }
+
+        .button2:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+    body {
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0px;
+        font-family: helvetica;
+        background-color: #81DAF5;
+        background: url('../../Images/admin_user_select_page.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    #wrapper {
+        text-align: center;
+        margin: 0 auto;
+        padding: 0px;
+        width: 995px;
+    }
+
+    h1 {
+        margin-top: 50px;
+        color: white;
+        font-size: 50px;
+    }
+
+</style>
+</head>
+<body>
+    <button class="button" style="margin-left:100px; margin-top:0px; vertical-align:middle" type="submit" onclick="document.location='/Admin/AddRest'"><span>Add Restaurant </span></button>
+    <button class="button" style="margin-left:115px; margin-top:0px; vertical-align:middle" type="submit" onclick="document.location='/Admin/AddBranch'"><span>Add Branch </span></button>
+    <button class="button" style="margin-left:125px; margin-top:0px; vertical-align:middle" type="submit" onclick="document.location='/Admin/EditRest'"><span>Edit Restaurant </span></button>
+    <br><br><br>
+    <button class="button2" style="margin-left:108px; margin-top:0px; " type="submit" onclick="document.location='/Admin/AddMenu'"><span>Add Menu </span></button>
+    <button class="button2" style="margin-left:145px; margin-top:0px" type="submit" onclick="document.location='/Admin/EditMenu'"><span>Edit Menu </span></button>
+
+</body>

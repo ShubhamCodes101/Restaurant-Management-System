@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2 style="text-align:center; font-size:xx-large; font-weight:900">Order Page</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        function getRests() {
+            $.ajax({
+                type: 'GET',
+                url: '/User/GetRests2',
+                //data: { city: $("#H1").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    //alert("hii");
+                    var tdata = $("#tblRest tbody");
+                    tdata.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var trow = "<tr>" +
+                            "<td>" + data[i].Rname + "</td>" +
+                            "<td>" + data[i].bcity + "</td>" +
+                            "<td>" + data[i].Location + "</td>" +
+                            "<td>" + data[i].Category + "</td>" +
+                            //"<td>" + "<img src=" + data[i].Picture + " width='70' height='70'/>" + "</td>"
+                            "<td>" + "<img src=" + data[i].bimage + " width='70' height='70'/>" + "</td>"
+                        "</tr>";
+                        tdata.append(trow);
+                    }
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+    </script>
+    <meta name="viewport" content="width=device-width" />
+    <title>NavBar</title>
+    @*<script src="~/JsLibrary/AdminJs.js"></script>*@
+
+    <script src="~/JsLibrary/UserJs.js"></script>
+    <style>
+        body, h1, h3, h4, h5, h6 {
+            font-family: "Karma", sans-serif;
+            background-color: #808080
+            /* background-color: black*/
+        }
+
+        .w3-bar-block .w3-bar-item {
+            padding: 20px
+        }
+
+        tr:hover {
+            background-color: aquamarine;
+        }
+    </style>
+
+</head>
+<body style="background-image: url('../../Images/bg_2.jpg'); background-size:cover">
+
+    @*@using (Html.BeginForm("Index", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {*@
+    @*<div style="background-image: url('~/Images/back1.jpg');">*@
+
+    <div class="parent">
+        @*<p>
+                @{
+                    string str = Session["City"] as string;
+                }
+
+            </p>
+            <input id="H1" type="hidden" value="@str" />*@
+        @*<input id="btn" type="button" value="@Session["UserId"]" />*@
+        <center>
+        <div style="width:1000px; margin-left: 50px;margin-top: 10px;border: 1px solid black">
+            <table class="table" id="tblRest" style="font-weight:500">
+                <thead>
+                    <tr style="font-weight:500">
+                        <th>Restaurant</th>
+                        <th>City</th>
+                        <th>Location</th>
+                        <th>Restaurant Type</th>
+                        <th>Image</th>
+                        @*<th>Links</th>*@
+                        @*<th>Picture</th>*@
+                    </tr>
+                </thead>
+                <tbody style="font-weight:800">
+                </tbody>
+            </table>
+        </div>
+            </center>
+    </div>
+
+    <script>
+        getRests();
+    </script>
+    <style>
+        table {
+            margin-left:auto;
+            margin-top:auto;
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /*tr:hover {
+            background-color: #f15009;
+        }*/
+    </style>
+    <script>
+        $(document).ready(function () {
+            //=================================================================
+            //click on table body
+            //$("#tableMain tbody tr").click(function () {
+            $('#tblRest tbody').on('click', 'tr', function () {
+                //get row contents into an array
+                var tableData = $(this).children("td").map(function () {
+                    return $(this).text();
+                }).get();
+
+                //var td = tableData[0] + '*' + tableData[1];
+                //alert(tableData[1]);
+                var rest = tableData[0];
+                var branch = tableData[2];
+                function menu() {
+                    var dat = {
+                        Rname: rest,
+                        Location: branch
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/User/Sessions',
+                        data: JSON.stringify(dat),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        success: function (data) {
+                            //alert(data.moviename);
+                            // alert(data.multiplexlocation);
+                            //alert(data.showdate);
+                        },
+                        error: function (res) {
+                            alert('Something Went Wrong');
+                            console.log(res);
+                        }
+                    });
+                }
+                menu();
+                window.location.href = 'SelectMenu';
+            });
+        });
+    </script>
+</body>
+</html>
+

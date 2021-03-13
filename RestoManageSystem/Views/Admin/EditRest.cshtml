@@ -1,0 +1,332 @@
+﻿
+@{
+    ViewBag.Title = "EditRest";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h2 style="text-align:center; color:yellow; font-weight:800">Edit Restaurant</h2>
+<head>
+    <style>
+        body {
+            text-align: center;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+            font-family: helvetica;
+            background-color: #81DAF5;
+            background: url('../../Images/signup_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #wrapper {
+            text-align: center;
+            margin: 0 auto;
+            padding: 0px;
+            width: 995px;
+        }
+
+        h1 {
+            margin-top: 50px;
+            color: white;
+            font-size: 50px;
+        }
+    </style>
+
+<script>
+        function loadAllName() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/GetAllName1',
+                dataType: 'JSON',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    var toptions = $("#s2");
+                    var option = "<option value='Select Name'>Select Name </option>";
+                    for (var i = 0; i < data.length; i++) {
+                        option += "<option value='" +
+                            data[i] +
+                            "'>" + data[i] + "</option>";
+                    }
+                    toptions.append(option);
+                },
+                error: function (err) {
+                    console.log('Something Wrong !!!!');
+                }
+
+            });
+
+        }
+
+        function cities() {
+            var dat = {
+                Rname: $("#s2").val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/GetAllCity',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var options = '';
+                    options = '<option value=Select Restaurant> Select Restaurant</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    $("#s1").empty();
+                    $("#s1").append(options);
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+
+        function Locs() {
+            var dat = {
+                Rname: $("#s2").val(),
+                bcity: $("#s1").val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/GetAllLoc',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var options = '';
+                    options = '<option value=Select Restaurant> Select Restaurant</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    $("#s3").empty();
+                    $("#s3").append(options);
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+
+            });
+        }
+
+        function Data() {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Branch3',
+                dataType: 'JSON',
+                data: {
+                    Rname: $("#s2").val(),
+                    bcity: $("#s1").val(),
+                    Location: $("#s3").val()
+                },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    $("#S5").val(data[0].bphonenum);
+                    $("#loc").val(data[0].Location);
+                    $("#File3").val(data[0].Itemimage);
+                    $("#s5").val(data[0].Rname);
+                },
+                error: function (err) {
+                    alert('wrong');
+                    console.log('Something Wrong !!!!');
+                }
+
+            });
+        }
+
+
+        function delBranch() {
+            var dat = {
+                Rname: $("#s2").val(),
+                bcity: $("#s1").val(),
+                Location: $("#s3").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/DelBranch2',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    alert('Branch Deleted');
+                    console.log(data);
+                    var url = '/Admin/EditRest/';
+                    window.location = url;
+                }
+            });
+        }
+
+</script>
+</head>
+
+<div style="margin-left:200px;width:600px; height: 300px; float: left;">
+    @using (Html.BeginForm("FinalUpdateBranch", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <br><br>
+        <table class="table" style="color:black; font-size:large; font-weight:700; margin-left:110px">
+            <tbody>
+                <tr>
+                    <td> Select Restaurant Name:</td>
+                    <td>
+                        <select id="s2" onchange="cities()" name="Rname">
+                        </select>
+                    </td>
+
+
+
+                </tr>
+                <tr>
+                    <td>Select City:</td>
+                    <td>
+                        <select id="s1" onchange="Locs()" name="bcity">
+                            <option>   </option>
+                        </select>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td> Select Location:</td>
+                    <td>
+                        <select id="s3" onchange="Data()" name="Location">
+                            <option>   </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Enter New Location:</td>
+                    <td>
+                        <input id="loc" type="text" name="Location1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Branch Name:</td>
+                    <td>
+                        <input id="s5" type="text" name="Rname" readonly="readonly" style="background-color:khaki" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Enter Phonenumber:</td>
+                    <td>
+                        <input id="S5" type="text" name="bphonenum" />
+                    </td>
+                </tr>
+
+                @*<tr>
+                        <td> Select Restaurant Type:</td>
+                        <td>
+                            <select id="S4" name="Category">
+                                <option>   </option>
+                                <option>Veg</option>
+                                <option>Veg&Nonveg</option>
+                            </select>
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td>Select Image:</td>
+                    <td>
+                        <input id="File3" name="pfile3" type="file" onchange="readfile(this)" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input id="btnDel" type="button"
+                               onclick="delBranch()" value="Delete Branch" />
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input id="btnChange" type="Submit"
+                               value="Update" />
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 style="color:red; font-weight:200">  @(TempData["succ_msg"] as string)</h4>
+    }
+
+</div>
+<div style="margin-left: 700px; margin-top: -400px;display:none" id="imagepreview" class="thumbnail, zoom">
+    <img class="img-responsive" id="targetImg" width="100" height="100" />
+
+</div>
+<div style="margin-left: 700px; margin-top: -400px;display:none" id="imagepreview2" class="thumbnail, zoom">
+    <img class="img-responsive" id="targetImg2" width="100" height="100" />
+
+</div>
+
+
+<div>
+    <img src="readfile()" alt="" />
+    <img src="" alt="" />
+</div>
+
+
+<script type="text/javascript">
+    function readfile(input) {
+        console.log(input);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#File4').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+
+    function readfile1(input) {
+        console.log(input);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#File3').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#File3").change(function () {
+            var File = this.files;
+            if (File && File[0]) {
+                ReadImage(File[0]);
+            }
+        })
+    })
+    var ReadImage = function (file) {
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB";
+                $("#targetImg").attr('src', _file.target.result);
+                $("#description").text("Size:" + size + ", " + height + "X " + width + ", " + type + "");
+                $("#imagepreview").show();
+            }
+        }
+    }
+</script>
+<script>
+    //restaurants();
+    loadAllName();
+
+</script>
+<body></body>

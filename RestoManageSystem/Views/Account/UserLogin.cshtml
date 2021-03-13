@@ -1,0 +1,132 @@
+﻿@model RestoManageSystem.Models.Credentials
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>User Login</title>
+    <style>
+        input[type=text], input[type=password] {
+            width: 180px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        input[type=text]:focus {
+            width: 100%;
+        }
+
+        input[type=password]:focus {
+            width: 100%;
+        }
+
+        select {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+            font-family: helvetica;
+            background-color: #81DAF5;
+            background: url('../../Images/bg_3.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #wrapper {
+            text-align: center;
+            margin: 0 auto;
+            padding: 0px;
+            width: 995px;
+        }
+
+        h1 {
+            margin-top: 150px;
+            color: white;
+            font-size: 45px;
+        }
+
+        input[type=button], input[type=submit], input[type=reset] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin-left: 420px; margin-top: 100px; width:500px;">
+        @using (Html.BeginForm("ValidateUser", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal;">
+                <h1>User Login</h1>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.Userid, "", new { @style = "color:cyan; font-weight:700" });
+                    <input type="text" name="Userid" placeholder="Enter Userid" class="form-control">
+                    @*@Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })*@
+
+                </div>
+                <br>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(Model => Model.Password, "", new { @style = "color:cyan; font-weight:700" })
+                    @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <input type="password" name="Password" placeholder="Enter Password" class="form-control">
+                    @* @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                </div>
+                <br><br>
+                <div class="form-group">
+                    @Html.ValidationMessageFor(model => model.Usercity, "", new { @style = "color:cyan; font-weight:700" })
+                   @* <select id="cmbcity" name="Usercity" class="form-control"><option value="0">--Select City--</option></select>*@
+                    @if (ViewBag.list !=null)
+                    {
+                        @Html.DropDownListFor(model=>model.Usercity, ViewBag.list as SelectList, "--Select City--", new { @style=""})
+                    }
+                </div>
+                @{ 
+                    if(TempData["userloginerror"] !=null)
+                    {
+                        <h5 style="color:cyan;">@(TempData["userloginerror"] as string)</h5>
+                    }
+                }
+                <br><hr />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log In" class="btn btn-default" style="font-size:large" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="@Url.Action("Signup")" style="font-weight:400; font-size:large; color:greenyellow"><i class="glyphicon glyphicon-plane">New??? Signup here...</i></a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div>
+            <h2><a href="@Url.Action("Index","Home")" style="color:yellow">Return to Home Page</a></h2>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+﻿@model RestoManageSystem.Models.Restaurant
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h2 style="text-align:center; color:yellow; font-weight:800">Add Restaurant</h2>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    @*<style>
+        
+            box-sizing: border-box;
+        }
+
+        .zoom {
+            padding: 50px;
+            transition: transform .2s;
+            width: 1000px;
+            height: 1000px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                -ms-transform: scale(1.5);*/ /* IE 9 */
+        /*-webkit-transform: scale(1.5);*/ /* Safari 3-8 */
+        transform: scale(1.5);
+            }
+
+
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Karma", sans-serif;
+            background-color: #808080
+        }
+
+        .w3-bar-block .w3-bar-item {
+            padding: 20px
+        }
+    </style>*@
+
+</head>
+
+<body style="background-image: url('../../Images/signup_bg.jpg');background-size:cover">
+    <div style="margin-left: 100px; margin-top: 30px;margin-right: 100px;">
+        <hr>
+    </div>
+    <!--<div style="margin-left: 50px;margin-top: 50px;margin-right: 50px;border: 1px solid black">-->
+    @*<table id="tblRest" class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Restaurant Name</th>
+                    <th>Restaurant Type</th>
+                    <th>Restaurant Image</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>*@
+    <!--</div>-->
+    <br />
+    <br />
+    <div style="margin-left:300px;border:0.1px solid black;margin-right:525px;">
+        @using (Html.BeginForm("AddRestaurant2", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <div style="width:620px;height:300px;float:left;">
+            <table class="table" style="color:black; font-size:x-large; font-weight:600">
+
+                <tbody>
+                    <tr>
+                        <td> Enter Name:</td>
+                        <td>
+                            <input id="rest" type="text" name="Rname" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Select Type:</td>
+                        <td>
+                            <select id="type" name="Category">
+                                <option value="VEG">VEG</option>
+                                <option value="NON-VEG">NON-VEG</option>
+                                <option value="BOTH">BOTH</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Select Image:</td>
+                        <td>
+                            <input id="File1" name="pfile1" type="file" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input id="btnAdd" type="submit" value="Add Restaurant" style="margin-left:200px" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+             @{ <h4 style="color:red; font-weight:200">  @(TempData["rest_msg"] as string)</h4>}
+            <div style="margin-left: 600px; margin-top: 400px;display:none" id="imagepreview" class="thumbnail, zoom">
+                <img class="img-responsive" id="targetImg" width="100" height="100" />
+
+            </div>
+            <div style="margin-left: 600px; margin-top: -400px;display:none" id="imagepreview2" class="thumbnail, zoom">
+                <img class="img-responsive" id="targetImg2" width="100" height="100" />
+
+            </div>
+           
+        </div>
+        }
+
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#File1").change(function () {
+                var File = this.files;
+                if (File && File[0]) {
+                    ReadImage(File[0]);
+                }
+            })
+        })
+        var ReadImage = function (file) {
+            var reader = new FileReader;
+            var image = new Image;
+            reader.readAsDataURL(file);
+            reader.onload = function (_file) {
+                image.src = _file.target.result;
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    var type = file.type;
+                    var size = ~~(file.size / 1024) + "KB";
+                    $("#targetImg").attr('src', _file.target.result);
+                    $("#description").text("Size:" + size + ", " + height + "X " + width + ", " + type + "");
+                    $("#imagepreview").show();
+                }
+            }
+        }
+    </script>
+    <script>
+        cities3();
+    </script>
+    
+</body>
+

@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "SelectMenu";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2 style="text-align:center; color:black; font-weight:800">Select Menu</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        function getMenu() {
+            $.ajax({
+                type: 'POST',
+                url: '/User/GetMenu2',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var tdata = $("#tblMenu tbody");
+                    tdata.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var trow = "<tr>" +
+                            "<td>" + data[i].Itemsname + "</td>" +
+                            "<td>" + data[i].price + "</td>" +
+
+                            "<td>" + "<img src=" + data[i].Itemimage + " width='70' height='70'/>" + "</td>"
+                        "</tr>";
+                        tdata.append(trow);
+                    }
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+
+        function addToCart() {
+            var dat = {
+                Fooditems: $("#Text1").val(),
+                Price: $("#Text2").val(),
+                Quantity: $("#Text3").val()
+
+            }
+            if (dat.Quantity == 0) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/User/AddToCart2',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    alert("Added To Cart Successfully");
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+    </script>
+    <meta name="viewport" content="width=device-width" />
+    <title>NavBar</title>
+    @*<script src="~/JsLibrary/AdminJs.js"></script>*@
+
+    <script src="~/JsLibrary/UserJs.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: aquamarine;
+        }
+
+        body, h1, h3, h4, h5, h6 {
+            font-family: "Karma", sans-serif;
+            background-color: #808080
+            /* background-color: black*/
+        }
+
+        .w3-bar-block .w3-bar-item {
+            padding: 20px
+        }
+    </style>
+
+</head>
+<body style="background-image: url('../../Images/bg_2.jpg');background-size:cover">
+
+    @*@using (Html.BeginForm("Index", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {*@
+    <div class="parent">
+        @*<p>
+                @{
+                    string str2 = Session["City"] as string;
+                    string str3 = Session["Rname"] as string;
+                    string str4 = Session["Branch"] as string;
+                }
+
+            </p>
+            <input id="H1" type="hidden" value="@str2" />
+            <input id="H2" type="hidden" value="@str3" />
+            <input id="H3" type="hidden" value="@str4" />*@
+        @*<input id="btn" type="button" value="@str2" />*@
+        @*<input id="btn" type="button" value="@str" />*@
+        <div style="width:600px;margin-top: 50px;margin-left: 250px;border: 1px solid black">
+            <table class="table" id="tblMenu" style="margin-left:0px">
+                <thead>
+                    <tr>
+                        <th>FoodItem</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        @*<th>Links</th>*@
+                        @*<th>Picture</th>*@
+                    </tr>
+                </thead>
+                <tbody style="font-weight:800">
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <br />
+        <br />
+
+
+        <div style="margin-left:300px" >
+            <input id="Text1" type="text" readonly="readonly" />
+            &nbsp
+            &nbsp
+            &nbsp
+            <input id="Text2" type="text" readonly="readonly" style="width:60px" />
+            &nbsp
+            &nbsp
+            &nbsp
+            <input id="Text3" type="number" style="width:40px" value="0" min="0" />
+            &nbsp
+            &nbsp
+            &nbsp
+            <input id="Button1" type="button" value="Add To Cart" onclick="addToCart()" style="color:red; background-color:black; font-size:large" />
+
+        </div>
+    </div>
+
+    <script>
+        getMenu();
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $('#tblMenu tbody').on('click', 'tr', function () {
+                var tableData = $(this).children("td").map(function () {
+                    return $(this).text();
+                }).get();
+                //var td = tableData[0];
+                //alert(td);
+                var Item = tableData[0];
+                var Price = tableData[1];
+                $("#Text1").val(Item);
+                $("#Text2").val(Price);
+            });
+        });
+
+    </script>
+</body>
+</html>

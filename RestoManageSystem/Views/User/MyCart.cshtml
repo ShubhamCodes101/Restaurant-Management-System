@@ -1,0 +1,230 @@
+﻿
+@{
+    ViewBag.Title = "MyCart";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2 style="text-align:center; font-size:xx-large; font-weight:900">My Cart</h2>
+<br>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        function getCart() {
+            $.ajax({
+                type: 'GET',
+                url: '/User/GetCart2',
+                //data: { city: $("#H1").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    //alert("hii");
+                    var tdata = $("#tblCart tbody");
+                    tdata.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var trow = "<tr>" +
+                            "<td>" + data[i].Fooditems + "</td>" +
+                            "<td>" + data[i].Price + "</td>" +
+                            "<td>" + data[i].Quantity + "</td>"
+                        "</tr>";
+                        tdata.append(trow);
+                    }
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+
+
+        function getTotalPrice() {
+           
+            $.ajax({
+                type: 'GET',
+                url: '/User/GetTotalPrice2',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data);
+                    $("#T1").val(data);
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+
+        function changeQuantity() {
+            var dat = {
+                Fooditems: $("#T2").val(),
+                Quantity: $("#T3").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/User/ChangeQuantity2',
+                data: JSON.stringify(dat),
+                //data: { Quantity: $("#T3").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    alert('Quantity Changed');
+                    console.log(data);
+                    var url = '/User/MyCart/';
+                    window.location = url;
+                }
+            });
+        }
+
+
+        function deleteItem() {
+            var dat = {
+                Fooditems: $("#T2").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/User/DeleteItem2',
+                data: JSON.stringify(dat),
+                //data: { FoodItem: $("#Text2").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    alert('Item Deleted');
+                    console.log(data);
+                    var url = '/User/MyCart/';
+                    window.location = url;
+                }
+            });
+        }
+
+
+        function placeOrder() {
+            $.ajax({
+                type: 'GET',
+                url: '/User/PlaceOrder2',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    //alert('Order Is Placed And It Will Reach You Soon');
+                    console.log(data);
+                    var url = '/User/Order_placed/';
+                    window.location = url;
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+
+    </script>
+    <meta name="viewport" content="width=device-width" />
+    <title>NavBar</title>
+    @*<script src="~/JsLibrary/AdminJs.js"></script>*@
+
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Karma", sans-serif;
+           
+            /* background-color: black*/
+        }
+
+        .w3-bar-block .w3-bar-item {
+            padding: 20px
+        }
+    </style>
+
+</head>
+
+<body style="background-image: url('../../Images/bg_2.jpg'); background-size: cover">
+
+
+    <div class="parent">
+
+        <center>
+            <div style="width:600px; margin-left: 50px;margin-top: 30px;margin-right: 50px;border: 1px solid black">
+                <table class="table" id="tblCart">
+                    <thead style="background-color:lightcoral">
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+
+                        </tr>
+                    </thead>
+                    <tbody style="font-weight:800">
+                    </tbody>
+                </table>
+                <div></div>
+                <input id="T2" type="text" />
+                <input id="Button1" type="button" value="Delete Item"
+                       onclick="deleteItem()" readonly="readonly" />
+                &nbsp
+                &nbsp
+                Change Quantity:
+                <input id="T3" type="number" style="width:40px" min="0"/>
+                <input id="Button2" type="button" value="Change Quantity"
+                       onclick="changeQuantity()" />
+            </div>
+    </center>
+    </div>
+
+    
+    <center>
+        <div style="font-size:large">
+            Total Price:
+            <input id="T1" type="text" style="width:60px; margin-top:50px" readonly="readonly" />
+        </div>
+        <br />
+        <div>
+            <button class="button"  type="submit" onclick="placeOrder()" style="background-color:cadetblue; color:black; font-size:large">Place Order</button>
+        </div>
+    </center>
+
+    <script>
+        getTotalPrice();
+        getCart();
+    </script>
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color:aqua;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            
+            $('#tblCart tbody').on('click', 'tr', function () {
+                //get row contents into an array
+                var tableData = $(this).children("td").map(function () {
+                    return $(this).text();
+                }).get();
+                var Item = tableData[0];
+                var Quant = tableData[2];
+                $("#T2").val(Item);
+                $("#T3").val(Quant);
+
+            });
+        });
+    </script>
+</body>
+</html>
+

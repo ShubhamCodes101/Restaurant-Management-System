@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "MyHistory";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2 style="text-align:center; font-size:xx-large; font-weight:900">My History</h2>
+<br>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        function getHistory() {
+            $.ajax({
+                type: 'GET',
+                url: '/User/GetHistory2',
+                //data: { city: $("#H1").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    //alert("hii");
+                    var tdata = $("#tblHistory tbody");
+                    tdata.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var trow = "<tr>" +
+                            "<td>" + data[i].Userid + "</td>" +
+                            "<td>" + data[i].Rname + "</td>" +
+                            "<td>" + data[i].Itemname + "</td>" +
+                            "<td>" + data[i].Price + "</td>" +
+                            "<td>" + data[i].Quantity + "</td>" +
+                            "<td>" + data[i].Date + "</td>"
+
+                        //"<td>" + "<img src=" + data[i].Picture + " width='70' height='70'/>" + "</td>"
+                        //"<td>" + "<img src=" + data[i].Logo + " width='70' height='70'/>" + "</td>"
+                        "</tr>";
+                        tdata.append(trow);
+                        //alert('Quantity Changed');
+                        console.log(data);
+                        //var url = '/User/MyHistory/';
+                        //window.location = url;
+                    }
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+            });
+        }
+    </script>
+    <meta name="viewport" content="width=device-width" />
+    <title>NavBar</title>
+    @*<script src="~/JsLibrary/AdminJs.js"></script>*@
+
+    <script src="~/JsLibrary/UserJs.js"></script>
+    <style>
+        body, h1, h3, h4, h5, h6 {
+            font-family: "Karma", sans-serif;
+            background-color: #808080
+            /* background-color: black*/
+        }
+
+        .w3-bar-block .w3-bar-item {
+            padding: 20px
+        }
+    </style>
+
+</head>
+<body style="background-image: url('../../Images/bg_2.jpg');background-size:cover">
+
+    @*@using (Html.BeginForm("Index", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {*@
+    @*<div style="background-image: url('~/Images/back1.jpg');">*@
+
+    <div class="parent">
+
+        @*<input id="btn" type="button" value="@Session["UserId"]" />*@
+        <center>
+            <div style="width:800px; margin-left: 150px;margin-top: 30px;margin-right: 50px;border: 1px solid black">
+                <table class="table" id="tblHistory">
+                    <thead style="color:chartreuse; font-size:large">
+                        <tr>
+                            <th>Userid</th>
+                            <th>Restaurant</th>
+                            <th>FoodItem</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-weight:900; color:white">
+                    </tbody>
+                </table>
+
+            </div>
+        </center>
+    </div>
+
+    <script>
+        getHistory();
+    </script>
+</body>
+</html>
+

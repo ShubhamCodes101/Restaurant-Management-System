@@ -1,0 +1,347 @@
+﻿
+@{
+    ViewBag.Title = "EditMenu";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h2 style="text-align:center; color:white; font-weight:800">Edit Menu</h2>
+<head>
+    <style>
+        body {
+            text-align: center;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+            font-family: helvetica;
+            background-color: #81DAF5;
+            background: url('../../Images/user_login_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #wrapper {
+            text-align: center;
+            margin: 0 auto;
+            padding: 0px;
+            width: 995px;
+        }
+
+        h1 {
+            margin-top: 50px;
+            color: white;
+            font-size: 50px;
+        }
+    </style>
+    <script>
+        function delItem() {
+            var dat = {
+                Rname: $("#s1").val(),
+                Itemsname: $("#s2").val()
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/DelItem2',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    alert('Item Deleted');
+                    console.log(data);
+                    var url = '/Admin/EditMenu/';
+                    window.location = url;
+                }
+            });
+        }
+
+        function loadAllName() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/GetAllName',
+                dataType: 'JSON',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    console.log(data);
+                    var toptions = $("#s1");
+                    var option = "<option value='Select Name'>Select Name </option>";
+                    for (var i = 0; i < data.length; i++) {
+                        option += "<option value='" +
+                            data[i] +
+                            "'>" + data[i] + "</option>";
+                    }
+                    toptions.append(option);
+                },
+                error: function (err) {
+                    console.log('Something Wrong !!!!');
+                }
+
+            });
+
+        }
+        function loadAllName1() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/GetAllName',
+                dataType: 'JSON',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    console.log(data);
+                    var toptions = $("#s5");
+                    var option = "<option value='Select Name'>Select Name </option>";
+                    for (var i = 0; i < data.length; i++) {
+                        option += "<option value='" +
+                            data[i] +
+                            "'>" + data[i] + "</option>";
+                    }
+                    toptions.append(option);
+                },
+                error: function (err) {
+                    console.log('Something Wrong !!!!');
+                }
+
+            });
+
+        }
+
+
+        function loadStud() {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Menu4',
+                dataType: 'JSON',
+                data: {
+                    Rname: $("#s1").val(),
+                    Itemsname: $("#s2").val(),
+                },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    $("#m1").val(data[0].Itemsname);
+                    $("#m2").val(data[0].price);
+                    $("#File1").val(data[0].Itemimage);
+                    //$("#txtPrice").val(data.price);
+                    //$("#txtAge").val(data.Studage);
+                    //$("#txtPrice").val(data.price);
+                },
+                error: function (err) {
+                    alert('wrong');
+                    console.log('Something Wrong !!!!');
+                }
+
+            });
+        }
+        //function finalUpdate() {
+        //    var price = $("#m2").val();
+        //    var Foodtype = $("#s4").val();
+        //    var Itemsname = $("#s2").val();
+        //    var Rname = $("#s1").val();
+        //    //var  = $("#txtAddr").val();
+        //    //var age = $("#txtAge").val();
+        //    var stud = {
+        //        price: price,
+        //        Foodtype: Foodtype,
+        //        Itemsname: Itemsname,
+        //        Rname:Rname,
+        //    };
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: '/Admin/FinalUpdateMenu',
+        //        data: JSON.stringify(stud),
+        //        dataType: 'JSON',
+        //        contentType: "application/json; charset=utf-8",
+        //        success: function (data) {
+        //            alert('Updated Successfully !!!!');
+
+        //            window.location = "/Admin/EditMenu";
+        //        },
+        //        error: function (err) {
+        //            alert('Wrong');
+        //            console.log('Something Wrong !!!!');
+        //        }
+
+        //    });
+        //}
+
+
+
+
+
+
+        function loaditems() {
+            var dat = {
+                Rname: $("#s1").val(),
+
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Menu5',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var options = '';
+                    options = '<option value=Select Item> Select Item</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    $("#s2").empty();
+                    $("#s2").append(options);
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+
+            });
+        }
+        function loadAllitems() {
+            var dat = {
+                Rname: $("#s5").val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Menu3',
+                data: JSON.stringify(dat),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var tdata = $("#tblMenu tbody");
+                    tdata.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var trow = "<tr>" +
+                            "<td>" + data[i].Itemsname + "</td>" +
+                            "<td>" + data[i].price + "</td>" +
+                            "<td>" + data[i].Foodtype + "</td>" +
+                            "<td>" + "<img src=" + data[i].Itemimage + " width='70' height='70'/>" + "</td>"
+                        "</tr>";
+                        tdata.append(trow);
+                    }
+
+                },
+                error: function (res) {
+                    alert('Something Went Wrong');
+                    console.log(res);
+                }
+
+            });
+
+        }
+    </script>
+</head>
+<body>
+    <div style="margin-left: 500px; margin-top: 30px;margin-right: 100px;">
+
+    </div>
+    
+
+    <div style="border:2px solid yellowgreen;">
+        @*@using (Html.BeginForm("AddMenu2", "Admin", FormMethod.Post,
+                                                     new { enctype = "multipart/form-data" }))
+            {*@
+        @using (Html.BeginForm("FinalUpdateMenu", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <table class="table" style="color:white; font-size:large; font-weight:600;">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="color:yellow">Edit Menu Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Select Restaurant:
+                            <select id="s1" onchange="loaditems()" name="Rname" style="color:greenyellow; background-color:black">
+                                
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Select Item:
+                            <select id="s2" onchange="loadStud()" name="Rname" style="color:greenyellow; background-color:black">
+                                <option>   </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Itemname</td>
+                        <td>
+                            <input id="m1" type="text" name="Itemsname" style="color:black"/>
+                        </td>
+                    <tr>
+                        <td> Enter  Price</td>
+                        <td>
+                            <input id="m2" type="text" name="price" style="color:black"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Select Image:</td>
+                        <td>
+                            <input id="File1" name="pfile1" type="file" onchange="readfile(this)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Select type:
+                            <select id="s4" onchange="" name="Foodtype" style="color:greenyellow; background-color:black">
+                                <option>VEG</option>
+                                <option>NON-VEG</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input id="btnAdd" type="submit" onclick="" style="background-color:antiquewhite; color:black"
+                                   value="Update Item" />
+                        </td>
+
+                        <td colspan="2">
+                            <input id="btndel" type="button" onclick="delItem()" style="background-color:antiquewhite; color:black"
+                                   value="Delete Item" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        $("#File1").change(function () {
+            var File = this.files;
+            if (File && File[0]) {
+                ReadImage(File[0]);
+            }
+        })
+    })
+    var ReadImage = function (file) {
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB";
+                $("#targetImg").attr('src', _file.target.result);
+                $("#description").text("Size:" + size + ", " + height + "X " + width + ", " + type + "");
+                $("#imagepreview").show();
+            }
+        }
+    }
+</script>
+<div>
+    <script>
+        loadAllName();
+        loadAllName1();
+        //loadAllitems();
+    </script>
+</div>
+
